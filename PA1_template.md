@@ -2,6 +2,25 @@
 Rohan Jagdish Ashar  
 August 16, 2015  
 
+Executive Overview
+==================
+
+The **objective** of this report is to conduct some exploratory data analysis on data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
+
+**Based on the exploratory data analysis, I can conclude that:**
+
+1) The individual took about 10,000 steps everyday.
+2) The most number of steps were taken in the morning, with the highest number of steps taken at 8:35 am.
+3) The activity / steps on weekdays were different from the activity / steps on weekends.
+
+The report contains the following sections:
+
+* Loading and preprocessing the data
+* What is mean total number of steps taken per day?
+* What is the average daily activity pattern?
+* Imputing missing values
+* Are there differences in activity patterns between weekdays and weekends?
+
 ## Loading and preprocessing the data
 
 

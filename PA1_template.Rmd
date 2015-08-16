@@ -7,9 +7,28 @@ output:
     keep_md: true
 ---
 
+Executive Overview
+==================
+
+The **objective** of this report is to conduct some exploratory data analysis on data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
+
+**Based on the exploratory data analysis, I can conclude that:**
+
+1) The individual took about 10,000 steps everyday.
+2) The most number of steps were taken in the morning, with the highest number of steps taken at 8:35 am.
+3) The activity / steps on weekdays were different from the activity / steps on weekends.
+
+The report contains the following sections:
+
+* Loading and preprocessing the data
+* What is mean total number of steps taken per day?
+* What is the average daily activity pattern?
+* Imputing missing values
+* Are there differences in activity patterns between weekdays and weekends?
+
 ## Loading and preprocessing the data
 
-```{r loadData}
+```{r loadData, echo=TRUE}
 setwd("C:/Users/rohan/Documents/coursera/git/RepData_PeerAssessment1")
 unzip(zipfile = "activity.zip")
 
@@ -19,7 +38,7 @@ rawData <- read.csv("activity.csv")
 
 ## What is mean total number of steps taken per day?
 
-```{r StepsHistogram}
+```{r StepsHistogram, echo=TRUE}
 # Calculate the total number of steps taken per day
 stepsPerDay <- tapply(rawData$steps, rawData$date, FUN = sum, na.rm = TRUE)
 
@@ -39,7 +58,7 @@ median(stepsPerDay, na.rm=TRUE)
 
 ## What is the average daily activity pattern?
 
-```{r AvgDaily}
+```{r AvgDaily, echo=TRUE}
 # Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days   (y-axis)
 avgStepsByInterval <- aggregate(x = list(avgSteps = rawData$steps),
        by = list(interval = rawData$interval), FUN = mean, na.rm = TRUE)
@@ -59,7 +78,7 @@ timeMaxSteps
 
 ## Imputing missing values
 
-```{r MissingValues}
+```{r MissingValues, echo=TRUE}
 # Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 sum(is.na(rawData))
 
@@ -95,7 +114,7 @@ those days where 0 steps were recorded both the mean and median increased slight
 
 **Yes, there are differences between weekdays and weekends. The early morning activity seems to be much higher on the weekday slowing down between 10:00 am and 6:00 pm. While the weekend activity isn't as high between 8:00 am and 9:00 am, it is higher than the weekday activity from 11:00 am to 4:00 pm.**
 
-```{r WeekdayvsWeekend}
+```{r WeekdayvsWeekend, echo=TRUE}
 # Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 imputData$DayofWeek <- factor(format(as.Date(imputData$date), "%A"))
