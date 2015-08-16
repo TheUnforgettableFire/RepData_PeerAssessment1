@@ -1,15 +1,11 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Rohan Jagdish Ashar"
-date: "August 16, 2015"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Rohan Jagdish Ashar  
+August 16, 2015  
 
 ## Loading and preprocessing the data
 
-```{r loadData}
+
+```r
 setwd("C:/Users/rohan/Documents/coursera/git/RepData_PeerAssessment1")
 unzip(zipfile = "activity.zip")
 
@@ -19,7 +15,8 @@ rawData <- read.csv("activity.csv")
 
 ## What is mean total number of steps taken per day?
 
-```{r StepsHistogram}
+
+```r
 # Calculate the total number of steps taken per day
 stepsPerDay <- tapply(rawData$steps, rawData$date, FUN = sum, na.rm = TRUE)
 
@@ -30,16 +27,32 @@ histSteps <- qplot(stepsPerDay, binwidth = 500, geom = "histogram",
        xlab = "Total number of steps taken each day",
        ylab = "Count of days")
 histSteps
+```
 
+![](PA1_template_files/figure-html/StepsHistogram-1.png) 
+
+```r
 # Calculate and report the mean and median of the total number of steps taken per day
 mean(stepsPerDay, na.rm=TRUE)
+```
+
+```
+## [1] 9354.23
+```
+
+```r
 median(stepsPerDay, na.rm=TRUE)
+```
+
+```
+## [1] 10395
 ```
 
 
 ## What is the average daily activity pattern?
 
-```{r AvgDaily}
+
+```r
 # Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days   (y-axis)
 avgStepsByInterval <- aggregate(x = list(avgSteps = rawData$steps),
        by = list(interval = rawData$interval), FUN = mean, na.rm = TRUE)
@@ -50,19 +63,35 @@ timeSeries <- timeSeries + ggtitle("Average Number of Steps Taken by 5 Minute Ti
 timeSeries <- timeSeries + xlab("5 Minute Time Interval")
 timeSeries <- timeSeries + ylab("Average Number of Steps Taken")
 timeSeries
+```
 
+![](PA1_template_files/figure-html/AvgDaily-1.png) 
+
+```r
 # Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 maxRow <- which.max(avgStepsByInterval$avgSteps)
 timeMaxSteps <- avgStepsByInterval[maxRow, ]
 timeMaxSteps
 ```
 
+```
+##     interval avgSteps
+## 104      835 206.1698
+```
+
 ## Imputing missing values
 
-```{r MissingValues}
+
+```r
 # Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 sum(is.na(rawData))
+```
 
+```
+## [1] 2304
+```
+
+```r
 # Create a new dataset that is equal to the original dataset but with the missing data filled in.
 imputData <- rawData 
 
@@ -73,7 +102,13 @@ for (i in 1:nrow(imputData)) {
     }
 }
 sum(is.na(imputData))
+```
 
+```
+## [1] 0
+```
+
+```r
 # Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
 stepsPerDay <- tapply(imputData$steps, imputData$date, FUN = sum, na.rm = TRUE)
 histSteps <- qplot(stepsPerDay, binwidth = 500, geom = "histogram",
@@ -81,8 +116,24 @@ histSteps <- qplot(stepsPerDay, binwidth = 500, geom = "histogram",
        xlab = "Total number of steps taken each day",
        ylab = "Count of days")
 histSteps
+```
+
+![](PA1_template_files/figure-html/MissingValues-1.png) 
+
+```r
 mean(stepsPerDay, na.rm=TRUE)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(stepsPerDay, na.rm=TRUE)
+```
+
+```
+## [1] 10766.19
 ```
 
 Do these values differ from the estimates from the first part of the assignment?
@@ -95,7 +146,8 @@ those days where 0 steps were recorded both the mean and median increased slight
 
 **Yes, there are differences between weekdays and weekends. The early morning activity seems to be much higher on the weekday slowing down between 10:00 am and 6:00 pm. While the weekend activity isn't as high between 8:00 am and 9:00 am, it is higher than the weekday activity from 11:00 am to 4:00 pm.**
 
-```{r WeekdayvsWeekend}
+
+```r
 # Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 imputData$DayofWeek <- factor(format(as.Date(imputData$date), "%A"))
@@ -114,3 +166,5 @@ dayOfWeekTimeSeries <- dayOfWeekTimeSeries + xlab("5 Minute Time Interval")
 dayOfWeekTimeSeries <- dayOfWeekTimeSeries + ylab("Average Number of Steps Taken")
 dayOfWeekTimeSeries
 ```
+
+![](PA1_template_files/figure-html/WeekdayvsWeekend-1.png) 
